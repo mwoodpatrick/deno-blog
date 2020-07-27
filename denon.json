@@ -1,0 +1,12 @@
+{
+  "$schema": "https://deno.land/x/denon/schema.json",
+  "scripts": {
+    "start": {
+      "cmd": "deno run bin/server.ts",
+      "desc": "run my bin/server.ts file",
+      "allow": ["run", "env", "write", "net", "read"],
+      "inspect": "127.0.0.1:9229",
+      "unstable": true
+    }
+  }
+}

@@ -1,0 +1,33 @@
+{
+  // Use IntelliSense to understand related attributes.
+  // Hover to see descriptions of existing properties。
+  // For more information, please visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "denon",
+      "runtimeExecutable": "denon",
+      "runtimeArgs": ["start"],
+      "port": 9229,
+      "console": "integratedTerminal"
+    },
+    {
+      "name": "Deno (Attach)",
+      "type": "node",
+      "request": "attach",
+      "port": 9229
+    },
+    {
+      "name": "Deno-debugger",
+      "type": "pwa-node",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "runtimeExecutable": "deno",
+      "runtimeArgs": ["run", "--inspect", "-A", "--unstable", "bin/server.ts"],
+      "attachSimplePort": 9229,
+      "console": "integratedTerminal"
+    }
+  ]
+}
