@@ -3,15 +3,20 @@ import { Status, compare, makeJwt, Jose, Payload } from "../deps.ts";
 import User from "../models/User.ts";
 
 export async function register(ctx: any) {
-  const body = await ctx.request.body();
-
-  const user = await User.findByEmail(body.value.email);
+  const result = await ctx.request.body({
+    contentTypes: {
+      text: ["application/json"],
+    },
+  });
+  
+  const body = await result.value;
+  const user = await User.findByEmail(body.email);
 
   if (user) {
-    ctx.throw(Status.Conflict, "Email Address Already Taken!");
+    ctx.throw(Status.Conflict, `Email Address ${body.email} Already Taken!`);
   }
 
-  const { userId, userCount } = await User.create(body.value);
+  const { userId, userCount } = await User.create(body);
 
   ctx.response.status = Status.Created;
   ctx.response.type = "json";

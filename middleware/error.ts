@@ -12,15 +12,19 @@ export default async (ctx: any, next: any) => {
       ctx.throw(Status.NotFound, "Not Found!");
     }
   } catch (err) {
-    if (isHttpError(err)) {
-      const status = err.status;
+    const rt = ctx.response.headers.get("X-Response-Time");
+    console.log(`${ctx.request.method} ${ctx.request.url} - ${rt}`);
+    console.dir(ctx.request);
+    console.dir(err);
 
-      ctx.response.status = status;
-      ctx.response.type = "json";
-      ctx.response.body = {
-        status: between(status, 400, 500) ? "fail" : "error",
-        message: err.message,
-      };
-    }
+    const status = isHttpError(err) ? err.status : 500;
+
+    ctx.response.status = status;
+    ctx.response.type = "json";
+    ctx.response.body = {
+      status: between(status, 400, 500) ? "fail" : "error",
+      message: err.message,
+      success: false,
+    };
   }
 };
