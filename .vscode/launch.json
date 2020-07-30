@@ -11,7 +11,9 @@
       "runtimeExecutable": "denon",
       "runtimeArgs": ["start"],
       "port": 9229,
-      "console": "integratedTerminal"
+      "console": "integratedTerminal",
+      "envFile": "${workspaceFolder}/.env",
+      "env": { "USER": "john doe" }
     },
     {
       "name": "Deno (Attach)",
