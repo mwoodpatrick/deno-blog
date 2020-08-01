@@ -3,7 +3,7 @@ import { Status, compare, makeJwt, Jose, Payload } from "../deps.ts";
 import User from "../models/User.ts";
 
 export async function register(ctx: any) {
-  const result = await ctx.request.body({
+  const result = ctx.request.body({
     contentTypes: {
       text: ["application/json"],
     },
@@ -32,13 +32,19 @@ export async function register(ctx: any) {
 }
 
 export async function login(ctx: any) {
-  const body = await ctx.request.body();
+  const result = ctx.request.body({
+    contentTypes: {
+      text: ["application/json"],
+    },
+  });
 
-  const user = await User.findByEmail(body.value.email);
+  const body = await result.value;
+
+  const user = await User.findByEmail(body.email);
 
   if (!user) {
     ctx.throw(Status.UnprocessableEntity, "Wrong Email Address!");
-  } else if (await compare(body.value.password, user.password)) {
+  } else if (await compare(body.password, user.password)) {
     const header: Jose = { alg: "HS256", typ: "JWT" };
     const payload: Payload = {
       id: user.id,
@@ -54,7 +60,7 @@ export async function login(ctx: any) {
     ctx.response.type = "json";
     ctx.response.body = {
       status: "success",
-      message: `Logged in with ${body.value.email}`,
+      message: `Logged in with ${body.email}`,
       data: { accessToken: token },
     };
   } else {
