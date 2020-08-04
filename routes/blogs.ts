@@ -1,4 +1,4 @@
-import { Router } from "../deps.ts";
+import { Router, Status } from "../deps.ts";
 
 import authorize from "../middleware/authorize.ts";
 import { index, store, show, update, destroy } from "../controllers/blogs.ts";

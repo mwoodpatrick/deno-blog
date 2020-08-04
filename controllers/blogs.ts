@@ -15,9 +15,15 @@ export async function index(ctx: any) {
 }
 
 export async function store(ctx: any) {
-  const body = await ctx.request.body();
+  const result = ctx.request.body({
+    contentTypes: {
+      text: ["application/json"],
+    },
+  });
 
-  const { blogId, blogCount } = await Blog.create(body.value);
+  const body = await result.value;
+
+  const { blogId, blogCount } = await Blog.create(body);
 
   ctx.response.status = Status.Created;
   ctx.response.type = "json";
@@ -36,7 +42,7 @@ export async function show(ctx: any) {
   const blog = await Blog.findBySlug(ctx.params.slug);
 
   if (!blog) {
-    ctx.throw(Status.NotFound, "Not Found!");
+    ctx.throw(Status.NotFound, `Blog ${ctx.params.slug} Not Found!`);
   }
 
   ctx.response.status = Status.OK;
@@ -52,7 +58,7 @@ export async function update(ctx: any) {
   const blog: any = await Blog.findBySlug(ctx.params.slug);
 
   if (!blog) {
-    ctx.throw(Status.NotFound, "Not Found!");
+    ctx.throw(Status.NotFound, `Blog ${ctx.params.slug} Not Found!`);
   }
 
   const body = await ctx.request.body();
@@ -74,7 +80,7 @@ export async function destroy(ctx: any) {
   const blog: any = await Blog.findBySlug(ctx.params.slug);
 
   if (!blog) {
-    ctx.throw(Status.NotFound, "Not Found!");
+    ctx.throw(Status.NotFound, `Blog ${ctx.params.slug} Not Found!`);
   }
 
   blog.delete();

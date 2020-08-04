@@ -34,12 +34,17 @@ class Blog {
     const slug = slugify(params.title, { lower: true });
     const content = params.content;
 
-    const result = await client.execute(
-      "INSERT INTO ?? (title, slug, content) VALUES (?, ?, ?)",
-      [tableName, title, slug, content],
-    );
-
-    return { blogId: result.lastInsertId, blogCount: result.affectedRows };
+    try {
+      const result = await client.execute(
+        "INSERT INTO ?? (title, slug, content) VALUES (?, ?, ?)",
+        [tableName, title, slug, content],
+      );
+      console.log(`Created Blog entry slug ${slug}`);
+      return { blogId: result.lastInsertId, blogCount: result.affectedRows };
+    } catch (e) {
+      console.log(`Failed to creare Blog entry slug ${slug} got error storing ${e}`);
+      throw e;
+    }
   }
 
   static async findBySlug(slug: string) {

@@ -54,7 +54,7 @@ export async function login(ctx: any) {
     const key: string = Deno.env.get("TOKEN_SECRET") ||
       "H3EgqdTJ1SqtOekMQXxwufbo2iPpu89O";
 
-    const token = makeJwt({ header, payload, key });
+    const token = await makeJwt({ header, payload, key });
 
     ctx.response.status = Status.OK;
     ctx.response.type = "json";

@@ -13,13 +13,19 @@ export default async (ctx: any, next: any) => {
         "H3EgqdTJ1SqtOekMQXxwufbo2iPpu89O";
 
      
-      const { payload }: any = await validateJwt({jwt, key, critHandlers:undefined, algorithm: "HS256"});
+      const v = await validateJwt({jwt, key, critHandlers:undefined, algorithm: "HS256"});
 
-      ctx.request.user = payload;
+      if (v.isValid) {
+        ctx.request.user = v.payload;
+      }
+      else {
+        console.log(`invalid user: ${v}`);
+        ctx.throw(Status.Unauthorized);
+      }
 
       await next();
     } catch (err) {
-      ctx.throw(Status.Unauthorized);
+      throw(err);
     }
   }
 };
