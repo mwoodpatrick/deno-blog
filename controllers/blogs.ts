@@ -55,16 +55,24 @@ export async function show(ctx: any) {
 }
 
 export async function update(ctx: any) {
+  console.log("in update");
+  const result = ctx.request.body({
+    contentTypes: {
+      text: ["application/json"],
+    },
+  });
+
+  const body = await result.value;
+
   const blog: any = await Blog.findBySlug(ctx.params.slug);
 
-  if (!blog) {
+  const missing = !blog;
+  if (missing) {
     ctx.throw(Status.NotFound, `Blog ${ctx.params.slug} Not Found!`);
   }
 
-  const body = await ctx.request.body();
-
-  blog.title = body.value["title"] ? body.value["title"] : blog.title;
-  blog.content = body.value["content"] ? body.value["content"] : blog.content;
+  blog.title = body["title"] ? body["title"] : blog.title;
+  blog.content = body["content"] ? body["content"] : blog.content;
   blog.save();
 
   ctx.response.status = Status.OK;

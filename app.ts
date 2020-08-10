@@ -6,7 +6,7 @@ import logger from "./middleware/logger.ts";
 import timer from "./middleware/timer.ts";
 
 import home from "./routes/home.ts";
-import view from "./routes/view.ts";
+// import view from "./routes/view.ts";
 import blogs from "./routes/blogs.ts";
 import auth from "./routes/auth.ts";
 
@@ -25,7 +25,7 @@ app.use(timer);
 // app.use(session.use()(session));
 
 app.use(home.routes())
-  .use(view.routes())
+//  .use(view.routes())
   .use(blogs.routes())
   .use(auth.routes());
 
