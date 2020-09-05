@@ -1,4 +1,5 @@
 {
+    "deno.enable": true,
     "sqltools.connections": [
         {
             "mysqlOptions": {
